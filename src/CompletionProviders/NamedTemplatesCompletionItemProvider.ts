@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import * as utils from "../utils";
+import * as utils from '../utils';
 
 export class NamedTemplatesCompletionItemProvider implements vscode.CompletionItemProvider {
     /**
@@ -19,41 +19,23 @@ export class NamedTemplatesCompletionItemProvider implements vscode.CompletionIt
 
         const currentString = utils.getWordAt(currentLine, position.character - 1).trim();
         if (currentString.startsWith('"')) {
-            const content: string = utils.getNamedTemplatesFromFile(document);
-            if(content.length === 0) {
-                return undefined;
-            }
-            return this.getCompletionItemList(content);
+            const namedTemplates: string[] = utils.getAllNamedTemplatesFromFiles(document.fileName);
+            return this.getCompletionItemList(namedTemplates);
         }
+
+        return undefined;
     }
 
     /**
      * Generates a list of possible completions for the current template prefix.
      */
-    getCompletionItemList(content: string): vscode.ProviderResult<vscode.CompletionItem[] | vscode.CompletionList> {
-        let listOfCompletionItems = [];
-        const listOfNamedTemplates = this.getListOfNamedTemplates(content);
-        for (const tpl of listOfNamedTemplates) {
-            let item = new vscode.CompletionItem(tpl, vscode.CompletionItemKind.Field);
-            item.insertText = tpl;
+    private getCompletionItemList(namedTemplates: string[]): vscode.ProviderResult<vscode.CompletionItem[] | vscode.CompletionList> {
+        const listOfCompletionItems = [];
+        for (const namedTemplate of namedTemplates) {
+            const item = new vscode.CompletionItem(namedTemplate, vscode.CompletionItemKind.Field);
+            item.insertText = namedTemplate;
             listOfCompletionItems.push(item);
-
         }
         return listOfCompletionItems;
-    }
-
-    /**
-     * Parses named-template names from the _helpers.tpl files content.
-     */
-    getListOfNamedTemplates(content: string): string[] {
-		const matchRanges = [];
-
-		const templatePattern = /{{-? *define +"(.+?)" *-?}}/g;
-		let result;
-		while ((result = templatePattern.exec(content)) !== null) {
-			matchRanges.push(result[1])
-		}
-
-		return matchRanges;
     }
 }

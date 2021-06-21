@@ -1,5 +1,28 @@
 # Change Log
 
+## [0.10.0] - 2021-06-06
+### Added
+- Value file overriding (hierarchy) (Issue #35)
+## [0.9.4] - 2021-04-26
+### Changed
+- 'Rate me' popup. See issue #33.
+## [0.9.3] - 2021-04-02
+### Fixed
+- Security issue
+### Added
+- New README
+
+## [0.9.2] - 2021-02-25
+### Fixed
+- Issue #29
+## [0.9.1] - 2021-02-03
+### Fixed
+- Issue #27
+
+## [0.9.0] - 2021-01-30
+### Added
+- Autocomplete and linting for all NamedTemplates defined in any `*.tpl` file
+
 ## [0.8.0] - 2020-12-07
 ### Added
 - Autocomplete for `_helpers.tpl` (#23)
